@@ -30,16 +30,11 @@ public class ParkingSpotService {
     public ParkingSpotModel save(ParkingSpotModel parkingSpotModel) {
          return parkingSpotRepository.save(parkingSpotModel);
     }
-    public Optional<ParkingSpotModel> find(ParkingSpotModel parkingSpotModel){
-        Optional optional = parkingSpotRepository.findById(parkingSpotModel.getId());
-        return optional;
-    }
+
     @Transactional
     public void delete(ParkingSpotModel parkingSpotModel){
         parkingSpotRepository.delete(parkingSpotModel);
     }
-
-
 
     public boolean existByApartmentAndBlock(String apartment, String block) {
         return parkingSpotRepository.existsByApartmentAndBlock(apartment,block);

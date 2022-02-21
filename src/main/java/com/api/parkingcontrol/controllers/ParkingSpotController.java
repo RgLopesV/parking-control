@@ -75,4 +75,35 @@ public class ParkingSpotController {
         return ResponseEntity.status(HttpStatus.OK).body("Parking Spot deleted successfully");
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> updateParkingSpot(@PathVariable(value = "id") UUID id , @RequestBody @Valid ParkingSpotDto parkingSpotDto){
+
+        //segue abaixo duas formas de fazer a atualização
+        //        var parkingSpotModel = parkingSpotService.findById(id);
+//        if(!parkingSpotModel.isPresent()){
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Parking Spot not found!");
+//        }
+//        BeanUtils.copyProperties(parkingSpotDto,parkingSpotModel);
+//        parkingSpotModel.get().setAlterationDate(LocalDateTime.now(ZoneId.of("UTC")));
+//        parkingSpotService.save(parkingSpotModel.get());
+//        return ResponseEntity.status(HttpStatus.OK).body(parkingSpotModel.get());
+
+        Optional<ParkingSpotModel> parkingSpotModelOptional = parkingSpotService.findById(id);
+        if(!parkingSpotModelOptional.isPresent()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Parking Spot not found!");
+        }
+        var parkingSpotModel = parkingSpotModelOptional.get();
+        parkingSpotModel.setParkingSpotNumber(parkingSpotDto.getParkingSpotNumber());
+        parkingSpotModel.setModelCar(parkingSpotDto.getModelCar());
+        parkingSpotModel.setLicensePlateCar(parkingSpotDto.getLicensePlateCar());
+        parkingSpotModel.setBrandCar(parkingSpotDto.getBrandCar());
+        parkingSpotModel.setColorCar(parkingSpotDto.getColorCar());
+        parkingSpotModel.setApartment(parkingSpotDto.getApartment());
+        parkingSpotModel.setBlock(parkingSpotDto.getBlock());
+        parkingSpotModel.setResponsibleName(parkingSpotDto.getResponsibleName());
+        parkingSpotService.save(parkingSpotModel);
+
+        return ResponseEntity.status(HttpStatus.OK).body(parkingSpotModel);
+    }
+
 }
